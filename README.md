@@ -42,79 +42,113 @@ Or add it through Xcode:
 ```swift
 import SwiftPixelIt
 
-let pixelIt = PixelIt(from: yourImage)
-let pixelatedImage = pixelIt
-    .setScale(8)
-    .pixelate()
+let processor = PixelArtProcessor()
+let pixelatedImage = processor.pixelate(yourImage)
 ```
 
-### Custom Color Palette
+### Custom Configuration
 
 ```swift
-let customPalette = ColorPalette(colors: [
-    [26, 28, 44],
-    [93, 39, 93],
-    [177, 62, 83],
-    [238, 108, 77],
-    [255, 205, 117]
-])
+let configuration = PixelArtConfiguration(
+    pixelSize: 12,
+    maxSize: CGSize(width: 300, height: 300)
+)
 
-let pixelIt = PixelIt(from: yourImage)
-let paletteImage = pixelIt
-    .setPalette(customPalette)
-    .convertPalette()
+let pixelatedImage = processor.pixelate(yourImage, using: configuration)
+```
+
+### Apply Color Palette
+
+```swift
+let processor = PixelArtProcessor()
+
+// Use built-in palettes
+let retroImage = processor.applyPalette(yourImage, palette: .retro)
+let gameboyImage = processor.applyPalette(yourImage, palette: .gameboy)
+
+// Create custom palette
+let customPalette = ColorPalette(colors: [
+    Color(red: 255, green: 0, blue: 0),
+    Color(red: 0, green: 255, blue: 0),
+    Color(red: 0, green: 0, blue: 255)
+])
+let customImage = processor.applyPalette(yourImage, palette: customPalette)
 ```
 
 ### Grayscale Conversion
 
 ```swift
-let pixelIt = PixelIt(from: yourImage)
-let grayscaleImage = pixelIt.convertGrayscale()
+let processor = PixelArtProcessor()
+let grayscaleImage = processor.convertToGrayscale(yourImage)
 ```
 
-### Combined Processing
+### Complete Pixel Art Processing
 
 ```swift
-let pixelIt = PixelIt(from: yourImage)
-let processedImage = pixelIt
-    .setScale(6)
-    .setMaxWidth(200)
-    .setMaxHeight(200)
-    .setPalette(ColorPalette.defaultPalette)
-    .pixelate()
-    .convertPalette()
+let configuration = PixelArtConfiguration(
+    pixelSize: 8,
+    maxSize: CGSize(width: 400, height: 400),
+    colorPalette: .retro
+)
+
+let processor = PixelArtProcessor()
+let pixelArt = processor.processPixelArt(yourImage, configuration: configuration)
 ```
 
 ## API Reference
 
-### PixelIt Class
+### PixelArtProcessor
 
-#### Initialization
-- `init(from image: PlatformImage? = nil, palette: ColorPalette? = nil)`
-
-#### Configuration Methods
-- `setScale(_ scale: Int) -> PixelIt` - Set pixelation scale (1-50)
-- `setPalette(_ palette: ColorPalette) -> PixelIt` - Set color palette
-- `setMaxWidth(_ width: Int) -> PixelIt` - Set maximum width
-- `setMaxHeight(_ height: Int) -> PixelIt` - Set maximum height
-- `setSource(_ image: PlatformImage) -> PixelIt` - Set source image
+The main processor for creating pixel art effects.
 
 #### Processing Methods
-- `pixelate() -> PlatformImage?` - Apply pixelation effect
-- `convertPalette() -> PlatformImage?` - Apply color palette conversion
-- `convertGrayscale() -> PlatformImage?` - Convert to grayscale
+- `pixelate(_ image: PlatformImage, using configuration: PixelArtConfiguration = .default) -> PlatformImage?`
+- `applyPalette(_ image: PlatformImage, palette: ColorPalette) -> PlatformImage?`
+- `convertToGrayscale(_ image: PlatformImage) -> PlatformImage?`
+- `processPixelArt(_ image: PlatformImage, configuration: PixelArtConfiguration) -> PlatformImage?`
+
+### PixelArtConfiguration
+
+Configuration struct for pixel art processing.
+
+```swift
+let config = PixelArtConfiguration(
+    pixelSize: 8,                              // Size of pixels (1-50)
+    maxSize: CGSize(width: 400, height: 400),  // Optional max dimensions
+    colorPalette: .retro                       // Optional color palette
+)
+```
 
 ### ColorPalette
 
+Defines color palettes for pixel art.
+
 ```swift
-let palette = ColorPalette(colors: [
-    [255, 0, 0],   // Red
-    [0, 255, 0],   // Green
-    [0, 0, 255]    // Blue
+// Built-in palettes
+let retro = ColorPalette.retro
+let gameboy = ColorPalette.gameboy
+
+// Custom palette with Color objects
+let customPalette = ColorPalette(colors: [
+    Color(red: 255, green: 0, blue: 0),
+    Color(red: 0, green: 255, blue: 0),
+    Color(red: 0, green: 0, blue: 255)
 ])
 
-// Use the default palette
-let defaultPalette = ColorPalette.defaultPalette
+// Custom palette from RGB arrays
+let rgbPalette = ColorPalette(rgbColors: [
+    [255, 0, 0],
+    [0, 255, 0], 
+    [0, 0, 255]
+])
+```
+
+### Color
+
+Type-safe color representation.
+
+```swift
+let color = Color(red: 255, green: 128, blue: 0)  // Values are clamped to 0-255
 ```
 
 ## Platform Support

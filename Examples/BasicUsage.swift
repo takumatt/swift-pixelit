@@ -6,54 +6,79 @@ import UIKit
 import AppKit
 #endif
 
-class BasicUsageExample {
-    func pixelateImage(_ image: PlatformImage) -> PlatformImage? {
-        let pixelIt = PixelIt(from: image)
-        return pixelIt
-            .setScale(8)
-            .setMaxWidth(300)
-            .setMaxHeight(300)
-            .pixelate()
+class BasicUsageExamples {
+    
+    private let processor = PixelArtProcessor()
+    
+    func basicPixelation(_ image: PlatformImage) -> PlatformImage? {
+        let config = PixelArtConfiguration(pixelSize: 8)
+        return processor.pixelate(image, using: config)
     }
     
-    func applyCustomPalette(_ image: PlatformImage) -> PlatformImage? {
-        let retroPalette = ColorPalette(colors: [
-            [26, 28, 44],   // Dark blue
-            [93, 39, 93],   // Purple
-            [177, 62, 83],  // Pink
-            [238, 108, 77], // Orange
-            [255, 205, 117] // Yellow
+    func pixelateWithSizeLimit(_ image: PlatformImage) -> PlatformImage? {
+        let config = PixelArtConfiguration(
+            pixelSize: 10,
+            maxSize: CGSize(width: 300, height: 300)
+        )
+        return processor.pixelate(image, using: config)
+    }
+    
+    func applyRetroStyle(_ image: PlatformImage) -> PlatformImage? {
+        let config = PixelArtConfiguration(
+            pixelSize: 8,
+            colorPalette: .retro
+        )
+        return processor.processPixelArt(image, configuration: config)
+    }
+    
+    func applyGameboyStyle(_ image: PlatformImage) -> PlatformImage? {
+        let config = PixelArtConfiguration(
+            pixelSize: 12,
+            colorPalette: .gameboy
+        )
+        return processor.processPixelArt(image, configuration: config)
+    }
+    
+    func createCustomPalette(_ image: PlatformImage) -> PlatformImage? {
+        let customPalette = ColorPalette(colors: [
+            Color(red: 26, green: 28, blue: 44),   // Dark blue
+            Color(red: 93, green: 39, blue: 93),   // Purple
+            Color(red: 177, green: 62, blue: 83),  // Pink
+            Color(red: 238, green: 108, blue: 77), // Orange
+            Color(red: 255, green: 205, blue: 117) // Yellow
         ])
         
-        let pixelIt = PixelIt(from: image)
-        return pixelIt
-            .setScale(6)
-            .setPalette(retroPalette)
-            .pixelate()
+        return processor.applyPalette(image, palette: customPalette)
     }
     
     func createGrayscalePixelArt(_ image: PlatformImage) -> PlatformImage? {
-        let pixelIt = PixelIt(from: image)
-        return pixelIt
-            .setScale(10)
-            .convertGrayscale()
+        // First pixelate, then convert to grayscale
+        let config = PixelArtConfiguration(pixelSize: 10)
+        guard let pixelated = processor.pixelate(image, using: config) else {
+            return nil
+        }
+        return processor.convertToGrayscale(pixelated)
     }
     
-    func fullProcessingPipeline(_ image: PlatformImage) -> PlatformImage? {
-        let pixelIt = PixelIt(from: image)
+    func completeProcessingPipeline(_ image: PlatformImage) -> PlatformImage? {
+        let config = PixelArtConfiguration(
+            pixelSize: 8,
+            maxSize: CGSize(width: 400, height: 400),
+            colorPalette: .retro
+        )
         
-        let processedImage = pixelIt
-            .setScale(8)
-            .setMaxWidth(200)
-            .setMaxHeight(200)
-            .pixelate()
+        return processor.processPixelArt(image, configuration: config)
+    }
+    
+    func stepByStepProcessing(_ image: PlatformImage) -> PlatformImage? {
+        // Step 1: Pixelate
+        let pixelated = processor.pixelate(image)
         
-        guard let pixelatedImage = processedImage else {
+        // Step 2: Apply palette
+        guard let withPalette = processor.applyPalette(pixelated ?? image, palette: .retro) else {
             return nil
         }
         
-        return PixelIt(from: pixelatedImage)
-            .setPalette(ColorPalette.defaultPalette)
-            .convertPalette()
+        return withPalette
     }
 }

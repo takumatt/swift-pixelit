@@ -1,0 +1,4 @@
+module SwiftPixelIt {
+    header "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/.build/arm64-apple-macosx/debug/SwiftPixelIt.build/SwiftPixelIt-Swift.h"
+    requires objc
+}
