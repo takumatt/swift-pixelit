@@ -2,6 +2,12 @@
 
 A Swift library for converting images into pixel art, inspired by the JavaScript pixelit library. Built with Core Graphics for high performance on iOS and macOS.
 
+## Sample Results
+
+| Original | Pixelated | With Palette |
+|----------|-----------|--------------|
+| ![Original](docs/images/sample-original.png) | ![Pixelated](docs/images/sample-pixelated.png) | ![Palette](docs/images/sample-palette.png) |
+
 ## Features
 
 - Convert images to pixel art with configurable pixelation levels
