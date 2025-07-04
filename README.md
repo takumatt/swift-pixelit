@@ -6,7 +6,9 @@ A Swift library for converting images into pixel art, inspired by the JavaScript
 
 | Original | Pixelated | With Palette |
 |----------|-----------|--------------|
-| ![Original](docs/images/sample-original.png) | ![Pixelated](docs/images/sample-pixelated.png) | ![Palette](docs/images/sample-palette.png) |
+| ![Original](docs/images/example-original.png) | ![Pixelated](docs/images/example-pixelated.png) | ![Palette](docs/images/example-palette.png) |
+
+*Original photo by [Alex Panarin](https://unsplash.com/@alex_panarin) on [Unsplash](https://unsplash.com)*
 
 ## Features
 

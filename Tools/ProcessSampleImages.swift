@@ -153,7 +153,7 @@ struct SampleProcessor {
 }
 
 // Process images
-let originalPath = "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/docs/images/sample-original.png"
+let originalPath = "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/docs/images/example-original.png"
 
 guard let originalImage = SampleProcessor.loadImage(from: originalPath) else {
     print("Failed to load original image")
@@ -161,15 +161,15 @@ guard let originalImage = SampleProcessor.loadImage(from: originalPath) else {
 }
 
 // Create pixelated version
-if let pixelatedImage = SampleProcessor.pixelate(originalImage, scale: 8) {
-    let pixelatedPath = "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/docs/images/sample-pixelated.png"
+if let pixelatedImage = SampleProcessor.pixelate(originalImage, scale: 6) {
+    let pixelatedPath = "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/docs/images/example-pixelated.png"
     if SampleProcessor.saveImage(pixelatedImage, to: pixelatedPath) {
         print("Pixelated image saved to: \(pixelatedPath)")
     }
     
     // Create palette version from pixelated
     if let paletteImage = SampleProcessor.convertToPalette(pixelatedImage) {
-        let palettePath = "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/docs/images/sample-palette.png"
+        let palettePath = "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/docs/images/example-palette.png"
         if SampleProcessor.saveImage(paletteImage, to: palettePath) {
             print("Palette image saved to: \(palettePath)")
         }
