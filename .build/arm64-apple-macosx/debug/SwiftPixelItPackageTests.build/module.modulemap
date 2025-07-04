@@ -1,4 +1,0 @@
-module SwiftPixelItPackageTests {
-    header "/Users/tmatsushita/ghq/github.com/takumatt/swift-pixelit/.build/arm64-apple-macosx/debug/SwiftPixelItPackageTests.build/SwiftPixelItPackageTests-Swift.h"
-    requires objc
-}
